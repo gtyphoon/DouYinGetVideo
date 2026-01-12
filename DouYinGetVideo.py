@@ -1,6 +1,10 @@
 #!/usr/bin/env python3
 # -*- coding:utf-8 -*-
 # Author:gtyphoon
+# 抖音视频爬虫 - 仅个人非商业学习研究
+# 版权归属：[gtyphoon]
+# 禁止任何形式的商业用途，违规使用自行承担全部法律责任
+# 遵守抖音用户协议及相关法律法规，请勿滥用本代码
 import argparse
 import os
 import re
@@ -47,8 +51,8 @@ def this_args():
         default=argparse.SUPPRESS,  # 隐藏在参数列表中（可选，保持美观）
         help="显示此帮助信息并退出"
     )
-    optional_group.add_argument("-d", metavar='<DIR>', type=str, default=sys.path[-1] + '/video/',
-                        help='设置下载目录，缺省值为当前程序video文件夹，当前目录为%(default)s')
+    optional_group.add_argument("-d", metavar='<DIR>', type=str, default=sys.path[-1] + '/download/',
+                        help='设置下载目录，缺省值为当前程序download文件夹，当前目录为%(default)s')
     typem = optional_group.add_mutually_exclusive_group()
     typem.add_argument('-a', '--album', action='store_true',
                        help=f'传入某专辑内视频链接，将下载整个专辑，缺省值%(default)s')
@@ -87,8 +91,8 @@ def browser_make(mute_audio=True, headless=True):
     option = webdriver.ChromeOptions()
     # -------------------------- 新增：指定chrome.exe的路径 --------------------------
     # 填写你的chrome.exe完整绝对路径（Windows示例，Mac/Linux请对应修改路径格式）
-    chrome_exe_path = r".\chrome-win64\chrome.exe"
-    # chrome_exe_path = r".\chrome-headless-shell-win64\chrome-headless-shell.exe"
+    chrome_exe_path = r".\chrome\chrome-win64\chrome.exe"
+    # chrome_exe_path = r".\chrome\chrome-headless-shell-win64\chrome-headless-shell.exe"
     option.binary_location = chrome_exe_path  # 关键属性：指定浏览器可执行文件路径
     # --------------------------------------------------------------------------------
     # 原有配置保留不变
@@ -111,7 +115,7 @@ def browser_make(mute_audio=True, headless=True):
         'enable-logging'])  # 取消提示 DevTools listening on ws://127.0.0.1:5345/devtools/browser/e3cdda50-04a5-4a62-9da7-d3821db949cd
     # -------------------------- 新增：指定chromedriver.exe的路径 --------------------------
     # 填写你的chromedriver.exe完整绝对路径（Windows示例，Mac/Linux请对应修改路径格式，且无需.exe后缀）
-    chromedriver_exe_path = r".\chromedriver.exe"
+    chromedriver_exe_path = r".\chrome\chromedriver.exe"
     # 2. 新增：用ChromeService封装chromedriver.exe路径（解决executable_path弃用问题）
     chrome_service = Service(executable_path=chromedriver_exe_path)  # 封装驱动路径
     # 3. 初始化浏览器：传入service参数（替代原有executable_path）
